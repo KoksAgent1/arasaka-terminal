@@ -57,7 +57,7 @@ function verifyCode() {
   const code = document.getElementById('unlockCode').value.trim();
   const feedback = document.getElementById('codeFeedback');
 
-  if (code === 'CYBERLOOPS2025') {
+  if (code === 'D4DELTA289') {
     document.getElementById('lockOverlay').style.display = 'none';
   } else {
     feedback.textContent = 'KEIN ZUGRIFF';
