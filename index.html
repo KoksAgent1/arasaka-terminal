@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arasaka Terminal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+	<div id="lockOverlay">
+	<div class="scan-frame">
+		<p class="glitch-text">SYSTEM LOCKED</p>
+		<input type="text" id="unlockCode" placeholder="Enter Access Code" />
+		<button onclick="verifyCode()">UNLOCK</button>
+		<p id="codeFeedback"></p>
+	</div>
+	</div>
+  <div id="terminal">
+    <pre id="output">Arasaka OS v9.3 - Zugriffsebene: MITARBEITER
+Type <span class="cmd">hilfe</span> um verfügbare Befehle zu sehen.
+</pre>
+    <div class="input-line">
+      <span class="prompt">></span>
+      <input type="text" id="commandInput" autofocus />
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
