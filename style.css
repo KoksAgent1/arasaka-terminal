@@ -93,3 +93,11 @@ body {
     opacity: 0.4;
   }
 }
+.magenta { color: #ff66ff; }
+.green   { color: #00ff00; }
+.cyan    { color: #00ffff; }
+.red     { color: #ff3333; }
+.yellow  { color: #ffff66; }
+.gray    { color: #888888; }
+.blue    { color: #3399ff; }
+.timestamp { color: #666666; }

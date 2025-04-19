@@ -3,27 +3,27 @@ const input = document.getElementById('commandInput');
 
 const commands = {
   hilfe: () => {
-    return `Available commands:
+    return `Verfügbare Befehle:
 - hilfe
-- list projects
+- projekt auflistung
 - crack firewall projekt mila
-- read logs
+- logs auslesen
 - exit`;
   },
   'list projects': () => {
-    return `Available projects:
+    return `Verfügbare Projekte:
 - projekt mila
-- blacksite echo
-- vanta core`;
+- NEUROSAFE FIREWALL 9.2
+- ARKHEART 3.0`;
   },
   'crack firewall projekt mila': () => {
     window.location.href = 'pong.html'; // Minigame
     return '';
   },
-	'read logs': () => {
+	'logs auslesen': () => {
 	const unlocked = localStorage.getItem('firewall_mila_breached') === 'true';
 	return unlocked
-		? `>> Projekt Mila - Decrypted Logs:
+		? `>> Projekt Mila - Entschlüsselte Logs:
 			[2025-04-17 21:02] Subject initialized. Neural sync: 87%
 			[2025-04-17 21:02] MILITECH JAGDPROTOKOLL AKTIVIERT. SENTINEL SYSTEM: AKTIV.
 			[2025-03-17 21:17] Memory overwrite successful. Personality unstable.
