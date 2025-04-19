@@ -57,7 +57,7 @@ function verifyCode() {
   if (code === 'CYBERLOOPS2025') {
     document.getElementById('lockOverlay').style.display = 'none';
   } else {
-    feedback.textContent = 'ACCESS DENIED';
+    feedback.textContent = 'KEIN ZUGRIFF';
   }
 }
 
