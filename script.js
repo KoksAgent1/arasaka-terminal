@@ -31,7 +31,7 @@ const commands = {
 			[2025-04-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
 			[2025-04-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
 			[2025-04-17 23:10] Subjekt online.
-			[2025-04-17 21:57] Unbekannte Daten.
+			[2025-04-17 21:57] Unbekannte Daten entwendet.
 			[2025-04-19 23:00] Fremdzugriff erkannt.
 	
 		End of file.`
