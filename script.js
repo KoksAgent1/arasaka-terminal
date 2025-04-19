@@ -26,11 +26,12 @@ const commands = {
 		? `>> Projekt Mila – Entschlüsselte Protokolle:
 			[2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%
 			[2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.
-			[2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
-			[2025-03-17 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
-			[2025-03-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
-			[2025-03-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
-			[2025-03-17 23:10] Subjekt online.
+			[2025-04-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
+			[2025-04-17 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
+			[2025-04-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
+			[2025-04-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
+			[2025-04-17 23:10] Subjekt online.
+			[2025-04-19 23:00] Fremdzugriff erkannt.
 	
 		End of file.`
     : `>> Access Denied. Firewall not cracked.`;
