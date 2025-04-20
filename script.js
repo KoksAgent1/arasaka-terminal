@@ -5,6 +5,7 @@ const commands = {
   hilfe: () => {
     return `Verfügbare Befehle:
 - hilfe: Zeigt alle verfügbaren Befehle an.
+- projekt mila: Zeigt alle Projekt Mila Daten und Befehle.
 - projekt auflistung: Listet alle verfügbaren Projekte auf.
 - crack firewall projekt mila: Bricht die Firewall von Projekt Mila durch und startet ein Minigame.
 - logs auslesen: Zeigt die entschlüsselten Logs an, wenn die Firewall durchbrochen wurde.
@@ -13,9 +14,34 @@ const commands = {
   'projekt auflistung': () => {
     return `Verfügbare Projekte:
 - Projekt Mila: Geheimes Projekt zur Entwicklung eines KI-gesteuerten Agenten.
-- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka, schwer zu knacken.
+- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka.
 - RELIC: Ein geheim gehaltenes Archiv-Projekt, das mysteriöse Daten enthält.
 - Echo Protokoll: Ein Projekt zur Überwachung und Aufzeichnung von Kommunikationskanälen.
+- ARKHEART 3.0: Das neueste KI-Experiment, das in Zusammenarbeit mit Militech entwickelt wird.`;
+  },
+  'projekt mila': () => {
+    return `Projekt Mila:
+- Projekt Mila: Geheimes Projekt zur Entwicklung eines KI-gesteuerten Agenten. Gebaut mit Hilfe von Bunny.
+	`;
+  },
+ 'NEUROSAFE FIREWALL 9.2': () => {
+    return `NEUROSAFE FIREWALL 9.2:
+- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka, schwer zu knacken.
+- Eingesetzt in den Agenten Black Adam, O.
+`;
+  },
+ 'RELIC': () => {
+    return `RELIC:
+- RELIC: Ein geheim gehaltenes Archiv-Projekt, das mysteriöse Daten enthält.
+`;
+  },
+ 'Echo Protokoll': () => {
+    return `Echo Protokoll:
+- Echo Protokoll: Ein Projekt zur Überwachung und Aufzeichnung von Kommunikationskanälen.
+`;
+  },
+ 'ARKHEART 3.0': () => {
+    return `ARKHEART:
 - ARKHEART 3.0: Das neueste KI-Experiment, das in Zusammenarbeit mit Militech entwickelt wird.`;
   },
   'crack firewall projekt mila': () => {
@@ -33,9 +59,10 @@ const commands = {
         [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
         [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
         [2025-04-18 23:10] Subjekt online.
-        [2025-04-19 gd:2§] Unbekannt.
+        [2025-04-19 gd:2§] Unbekannt
         [2025-04-19 21:57] Unbekannte Daten entwendet.
         [2025-04-19 23:00] Fremdzugriff erkannt.
+        [2025-04-20 04:00] Deepscan, Systemneustart, Analyse gestartet.
 
         End of file.`
       : `>> Zugriff verweigert. Firewall nicht geknackt.`;
@@ -64,7 +91,7 @@ function verifyCode() {
     case 'BARANOV-A1915-0425':
       // Voller Terminalzugriff
       document.getElementById('lockOverlay').style.display = 'none';
-      feedback.textContent = 'Hallo Herr Direktor Baranov. Voller Zugriff gewährt.';
+      feedback.textContent = 'Hallo Herr Direktor Baranov. Vollen Zugriff gewährt.';
       break;
 
     case 'LUMINA-42A-HEART7':
@@ -76,7 +103,7 @@ function verifyCode() {
 
     case 'D4DELTA289':
       // Hacker Code Effekt oder UI-Aktion
-      feedback.textContent = 'Direktor Baranov – Zugriff autorisiert.';
+      feedback.textContent = 'Arasaka Interna – Zugriff verweigert.';
       loadBaranovLogs();
 	  window.location.href = 'hacking.html';
       break;
