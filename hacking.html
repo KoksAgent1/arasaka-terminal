@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hacking Interface</title>
+  <style>
+    body {
+      background-color: black;
+      color: #0ff;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .terminal {
+      background: #111;
+      border: 2px solid #0ff;
+      padding: 20px;
+      max-width: 600px;
+      text-align: center;
+    }
+    .sequence, .input {
+      margin: 10px 0;
+      font-size: 1.2em;
+    }
+    .input input {
+      background: black;
+      color: #0ff;
+      border: 1px solid #0ff;
+      font-family: monospace;
+      padding: 5px;
+    }
+    .result, .timer {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .timer {
+      color: #ff0;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="sequence" id="sequence"></div>
+    <div class="input">
+      <input type="text" id="userInput" placeholder="Code eingeben..." />
+      <button onclick="checkInput()">Übermitteln</button>
+    </div>
+    <div class="timer" id="timer">🕒 57 Sekunden verbleibend</div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const sequenceLength = 6;
+    let currentSequence = "";
+    let timeLeft = 57;
+    let timerInterval;
+
+    function generateSequence() {
+      for (let i = 0; i < sequenceLength; i++) {
+        currentSequence += characters[Math.floor(Math.random() * characters.length)];
+      }
+      document.getElementById("sequence").textContent = `Zugriffscode: ${currentSequence}`;
+    }
+
+    function checkInput() {
+      const input = document.getElementById("userInput").value.trim().toUpperCase();
+      const result = document.getElementById("result");
+
+      if (input === currentSequence) {
+        clearInterval(timerInterval);
+        result.textContent = ">>> ZUGRIFF GEWÄHRT – Terminal freigeschaltet!";
+        result.style.color = "#0f0";
+        setTimeout(() => {
+          localStorage.setItem("deltaAccessGranted", "true");
+          window.location.href = "index.html";
+        }, 2000);
+      } else {
+        result.textContent = ">>> FALSCHER CODE – Versuche es erneut.";
+        result.style.color = "#f00";
+      }
+    }
+
+    function startTimer() {
+      const timer = document.getElementById("timer");
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timer.textContent = `🕒 ${timeLeft} Sekunden verbleibend`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          timer.textContent = "⛔ Zeit abgelaufen!";
+          document.getElementById("result").textContent = ">>> ZUGRIFF VERWEIGERT – Sicherheitsprotokoll aktiviert.";
+          document.getElementById("result").style.color = "#f00";
+          document.querySelector('input').disabled = true;
+        }
+      }, 1000);
+    }
+
+    window.onload = () => {
+      generateSequence();
+      startTimer();
+    };
+  </script>
+</body>
+</html>

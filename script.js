@@ -29,11 +29,12 @@ const commands = {
         [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%
         [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.
         [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
-        [2025-03-17 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
-        [2025-03-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
-        [2025-03-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
-        [2025-04-17 23:10] Subjekt online.
-        [2025-04-17 21:57] Unbekannte Daten entwendet.
+        [2025-03-18 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
+        [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
+        [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
+        [2025-04-18 23:10] Subjekt online.
+        [2025-04-19 gd:2§] Unbekannt.
+        [2025-04-19 21:57] Unbekannte Daten entwendet.
         [2025-04-19 23:00] Fremdzugriff erkannt.
 
         End of file.`
@@ -55,7 +56,7 @@ input.addEventListener('keydown', (e) => {
   }
 });
 
-function verifyCode() {
+function verifyCode() { 
   const code = document.getElementById('unlockCode').value.trim().toUpperCase();
   const feedback = document.getElementById('codeFeedback');
 
@@ -77,6 +78,7 @@ function verifyCode() {
       // Hacker Code Effekt oder UI-Aktion
       feedback.textContent = 'Direktor Baranov – Zugriff autorisiert.';
       loadBaranovLogs();
+	  window.location.href = 'hacking.html';
       break;
 
     case 'ARSKA-MITABRTR':
@@ -93,16 +95,17 @@ function verifyCode() {
       feedback.textContent = 'KEIN ZUGRIFF';
       break;
   }
+
 }
 
 function showNeuroLogs() {
   const neuroLogs = `
     >> NEUROSAFE SYSTEM 9.2 - Protokolle:
-    [2025-04-17 11:45] Neuronale Synchronisation begonnen. Subjekt: Unbekannt.
-    [2025-04-17 14:23] Systeminitialisierung abgeschlossen. Zugriff auf gesperrte Daten.
-    [2025-04-17 16:30] Neuropathische Daten aus sensiblen Quellen extrahiert.
-    [2025-04-18 03:00] Sicherheitsverletzung im Protokoll, Investigation läuft...
-    [2025-04-19 00:12] Ungewöhnliche neuronale Aktivität festgestellt.
+    [2025-04-19 11:45] Neuronale Synchronisation begonnen. Subjekt: Unbekannt.
+    [2025-04-19 14:23] Systeminitialisierung abgeschlossen. Zugriff auf gesperrte Daten.
+    [2025-04-19 16:30] Neuropathische Daten aus sensiblen Quellen extrahiert.
+    [2025-04-20 03:00] Sicherheitsverletzung im Protokoll, Investigation läuft...
+    [2025-04-20 04:12] Ungewöhnliche neuronale Aktivität festgestellt.
 
     End of file.`;
   output.innerText += `\n${neuroLogs}`;
@@ -111,10 +114,10 @@ function showNeuroLogs() {
 function loadBaranovLogs() {
   const baranovLogs = `
     >> DIREKTOR BARANOV - PRIVATE LOGS:
-    [2025-03-17 00:00] Initialisierung abgeschlossen. Projektstatus: Aktiv.
-    [2025-03-17 03:30] Arasaka-Eindämmung durchbrochen. Neuronale Synchronisation im Gange.
-    [2025-03-18 01:15] Überwachungsprotokolle der letzten 48 Stunden.
-    [2025-03-19 04:45] Zugriff auf Projekt Mila - Initiierung des Reboot-Vorgangs.
+    [2025-04-17 00:00] Initialisierung abgeschlossen. Projektstatus: Aktiv.
+    [2025-04-17 03:30] Arasaka-Eindämmung durchbrochen. Neuronale Synchronisation im Gange.
+    [2025-04-18 01:15] Überwachungsprotokolle der letzten 48 Stunden.
+    [2025-04-18 21:45] Zugriff auf Projekt Mila - Initiierung des Reboot-Vorgangs.
 
     End of file.`;
   output.innerText += `\n${baranovLogs}`;
