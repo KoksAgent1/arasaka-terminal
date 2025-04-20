@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Codebreaker – Zugriff auf Arasaka-Terminal</title>
+  <title>Codebreaker – Zugriff erzwingen</title>
   <style>
     body {
       background-color: black;
@@ -40,6 +40,36 @@
     .hint {
       color: #ff5555;
     }
+
+    .codes {
+      margin-top: 20px;
+      color: #ff4444;
+      font-size: 1.2em;
+    }
+
+    .timer {
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: #ff4444;
+    }
+
+    .game-over {
+      color: #ff5555;
+      font-size: 1.5em;
+    }
+
+    .copy-button {
+      margin-top: 1em;
+      background-color: red;
+      color: black;
+      padding: 0.5em 1em;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+
+    .copy-button:disabled {
+      background-color: gray;
+    }
   </style>
 </head>
 <body>
@@ -52,9 +82,44 @@
 
   <div class="feedback" id="feedback"></div>
 
+  <div id="unlockedCodes" class="codes" style="display: none;">
+    <h3>Freigeschaltete Codes:</h3>
+    <ul id="codesList"></ul>
+    <button id="copyButton" class="copy-button" onclick="copyCode()" disabled>Code kopieren</button>
+  </div>
+
+  <div id="timer" class="timer">Zeit: 60s</div> <!-- Countdown Timer -->
+
+  <div id="gameOverMessage" class="game-over" style="display: none;">
+    Spiel vorbei! Der Code konnte nicht geknackt werden.
+  </div>
+
   <script>
     const secretCode = '472'; // Du kannst das ändern oder zufällig machen
+    let timerValue = 60; // Initiale Timer-Zeit in Sekunden
+    let timerInterval;
 
+    // Timer starten
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        if (timerValue > 0) {
+          timerValue--;
+          document.getElementById('timer').textContent = `Zeit: ${timerValue}s`;
+        } else {
+          clearInterval(timerInterval);
+          gameOver();
+        }
+      }, 1000);
+    }
+
+    // Spiel beendet
+    function gameOver() {
+      document.getElementById('gameOverMessage').style.display = 'block';
+      document.getElementById('codeInput').disabled = true;
+      document.getElementById('feedback').textContent = 'Du hast die Zeit überschritten! Spiel vorbei.';
+    }
+
+    // Code prüfen
     function checkCode() {
       const input = document.getElementById('codeInput').value;
       const feedback = document.getElementById('feedback');
@@ -75,9 +140,35 @@
           "ZETTA-MITARBRTR",
           "LUMINA-42A-VEGA9"
         ];
-        localStorage.setItem('terminal_codes', JSON.stringify(unlockedCodes));  // Codes speichern
-        localStorage.setItem('terminal_hacked', 'true'); // Hack abgeschlossen
 
+        // Zufällig einen Code auswählen
+        const randomCode = unlockedCodes[Math.floor(Math.random() * unlockedCodes.length)];
+
+        // Codes in localStorage speichern
+        localStorage.setItem('terminal_code', randomCode);
+        localStorage.setItem('terminal_hacked', 'true');
+        localStorage.setItem('unlocked_codes', JSON.stringify(unlockedCodes)); // Alle Codes speichern
+
+        // Freigeschaltete Codes anzeigen
+        const codesList = document.getElementById('codesList');
+        unlockedCodes.forEach(code => {
+          const li = document.createElement('li');
+          li.textContent = code;
+          codesList.appendChild(li);
+        });
+
+        // Codes-Sektion anzeigen
+        document.getElementById('unlockedCodes').style.display = 'block';
+
+        // Timer für 10 Sekunden setzen
+        setTimeout(() => {
+          document.getElementById('unlockedCodes').style.display = 'none'; // Codes nach 10 Sekunden ausblenden
+        }, 10000); // 10 Sekunden warten
+
+        // Neuer Timer für die Kopier-Funktion
+        enableCopyButton();
+
+        clearInterval(timerInterval); // Timer stoppen
         setTimeout(() => {
           window.location.href = 'index.html'; // Zurück zum Terminal
         }, 1500);
@@ -97,6 +188,36 @@
       }
 
       feedback.innerHTML = '<span class="hint">' + hints + '</span>';
+    }
+
+    // Funktion zum Kopieren des Codes
+    function copyCode() {
+      const codeList = document.getElementById('codesList');
+      const codes = codeList.getElementsByTagName('li');
+      const randomCode = codes[Math.floor(Math.random() * codes.length)].textContent;
+      navigator.clipboard.writeText(randomCode)
+        .then(() => {
+          alert(`Code "${randomCode}" wurde in die Zwischenablage kopiert!`);
+        })
+        .catch((err) => {
+          console.error('Fehler beim Kopieren:', err);
+        });
+    }
+
+    // Kopierbutton aktivieren
+    function enableCopyButton() {
+      const copyButton = document.getElementById('copyButton');
+      copyButton.disabled = false;
+
+      // Nach 10 Sekunden den Button wieder deaktivieren
+      setTimeout(() => {
+        copyButton.disabled = true;
+      }, 10000);
+    }
+
+    // Timer starten, wenn die Seite geladen wird
+    window.onload = function() {
+      startTimer();
     }
   </script>
 

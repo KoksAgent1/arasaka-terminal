@@ -4,41 +4,43 @@ const input = document.getElementById('commandInput');
 const commands = {
   hilfe: () => {
     return `Verfügbare Befehle:
-- hilfe
-- projekt auflistung
-- crack firewall projekt mila
-- logs auslesen
-- exit`;
+- hilfe: Zeigt alle verfügbaren Befehle an.
+- projekt auflistung: Listet alle verfügbaren Projekte auf.
+- crack firewall projekt mila: Bricht die Firewall von Projekt Mila durch und startet ein Minigame.
+- logs auslesen: Zeigt die entschlüsselten Logs an, wenn die Firewall durchbrochen wurde.
+- exit: Beendet die Sitzung und meldet den Benutzer ab.`;
   },
-  'list projects': () => {
+  'projekt auflistung': () => {
     return `Verfügbare Projekte:
-- projekt mila
-- NEUROSAFE FIREWALL 9.2
-- ARKHEART 3.0`;
+- Projekt Mila: Geheimes Projekt zur Entwicklung eines KI-gesteuerten Agenten.
+- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka, schwer zu knacken.
+- RELIC: Ein geheim gehaltenes Archiv-Projekt, das mysteriöse Daten enthält.
+- Echo Protokoll: Ein Projekt zur Überwachung und Aufzeichnung von Kommunikationskanälen.
+- ARKHEART 3.0: Das neueste KI-Experiment, das in Zusammenarbeit mit Militech entwickelt wird.`;
   },
   'crack firewall projekt mila': () => {
-    window.location.href = 'pong.html'; // Minigame
-    return '';
+    window.location.href = 'pong.html'; // Minigame starten
+    return 'Initiierung des Projekts Mila... Starte Minigame, um Firewall zu knacken.';
   },
-	'logs auslesen': () => {
-	const unlocked = localStorage.getItem('firewall_mila_breached') === 'true';
-	return unlocked
-		? `>> Projekt Mila – Entschlüsselte Protokolle:
-			[2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%
-			[2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.
-			[2025-04-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
-			[2025-04-17 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
-			[2025-04-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
-			[2025-04-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
-			[2025-04-17 23:10] Subjekt online.
-			[2025-04-17 21:57] Unbekannte Daten entwendet.
-			[2025-04-19 23:00] Fremdzugriff erkannt.
-	
-		End of file.`
-    : `>> Access Denied. Firewall not cracked.`;
-},
+  'logs auslesen': () => {
+    const unlocked = localStorage.getItem('firewall_mila_breached') === 'true';
+    return unlocked
+      ? `>> Projekt Mila – Entschlüsselte Protokolle:
+        [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%
+        [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.
+        [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
+        [2025-03-17 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
+        [2025-03-17 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
+        [2025-03-17 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
+        [2025-04-17 23:10] Subjekt online.
+        [2025-04-17 21:57] Unbekannte Daten entwendet.
+        [2025-04-19 23:00] Fremdzugriff erkannt.
+
+        End of file.`
+      : `>> Zugriff verweigert. Firewall nicht geknackt.`;
+  },
   exit: () => {
-    return `Session terminated. Logging out...`;
+    return `Sitzung beendet. Abmeldung...`;
   }
 };
 
@@ -46,7 +48,7 @@ input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     const cmd = input.value.trim();
     output.innerText += `\n> ${cmd}`;
-    const response = commands[cmd] ? commands[cmd]() : 'Unknown command. Type help.';
+    const response = commands[cmd] ? commands[cmd]() : 'Unbekannter Befehl. Tippe hilfe ein.';
     output.innerText += `\n${response}`;
     input.value = '';
     window.scrollTo(0, document.body.scrollHeight);
@@ -61,12 +63,12 @@ function verifyCode() {
     case 'BARANOV-A1915-0425':
       // Voller Terminalzugriff
       document.getElementById('lockOverlay').style.display = 'none';
-      feedback.textContent = '';
+      feedback.textContent = 'Hallo Herr Direktor Baranov. Voller Zugriff gewährt.';
       break;
 
     case 'LUMINA-42A-HEART7':
       // Spezielle Logs anzeigen oder Funktion triggern
-	  document.getElementById('lockOverlay').style.display = 'none';
+      document.getElementById('lockOverlay').style.display = 'none';
       feedback.textContent = 'Zugriff auf NEURO-Logs gewährt.';
       showNeuroLogs(); // Eigene Funktion, z. B. Modal oder Terminal-Eintrag
       break;
@@ -83,7 +85,7 @@ function verifyCode() {
       break;
 
     case 'MILA':
-      feedback.textContent = 'Projekt Mila wird neu initialisiert...';
+      feedback.textContent = 'Projekt wird neu initialisiert...';
       rebootMila(); // Private Logs
       break;
 
@@ -93,8 +95,38 @@ function verifyCode() {
   }
 }
 
+function showNeuroLogs() {
+  const neuroLogs = `
+    >> NEUROSAFE SYSTEM 9.2 - Protokolle:
+    [2025-04-17 11:45] Neuronale Synchronisation begonnen. Subjekt: Unbekannt.
+    [2025-04-17 14:23] Systeminitialisierung abgeschlossen. Zugriff auf gesperrte Daten.
+    [2025-04-17 16:30] Neuropathische Daten aus sensiblen Quellen extrahiert.
+    [2025-04-18 03:00] Sicherheitsverletzung im Protokoll, Investigation läuft...
+    [2025-04-19 00:12] Ungewöhnliche neuronale Aktivität festgestellt.
+
+    End of file.`;
+  output.innerText += `\n${neuroLogs}`;
+}
+
+function loadBaranovLogs() {
+  const baranovLogs = `
+    >> DIREKTOR BARANOV - PRIVATE LOGS:
+    [2025-03-17 00:00] Initialisierung abgeschlossen. Projektstatus: Aktiv.
+    [2025-03-17 03:30] Arasaka-Eindämmung durchbrochen. Neuronale Synchronisation im Gange.
+    [2025-03-18 01:15] Überwachungsprotokolle der letzten 48 Stunden.
+    [2025-03-19 04:45] Zugriff auf Projekt Mila - Initiierung des Reboot-Vorgangs.
+
+    End of file.`;
+  output.innerText += `\n${baranovLogs}`;
+}
+
+function rebootMila() {
+  output.innerText += `\n>> Projekt Mila wird neu gestartet...`;
+  setTimeout(() => {
+    output.innerText += `\n>> Projekt Mila erfolgreich neu initialisiert. Zugriff auf Daten gewährt.`;
+  }, 2000);
+}
 
 window.onload = () => {
   document.getElementById('lockOverlay').style.display = 'flex';
 };
-
