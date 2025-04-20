@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codebreaker – Zugriff auf Arasaka-Terminal</title>
+  <style>
+    body {
+      background-color: black;
+      color: red;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 1em;
+    }
+
+    input, button {
+      background-color: black;
+      color: red;
+      border: 1px solid red;
+      padding: 0.5em 1em;
+      font-size: 1.2em;
+      margin-top: 0.5em;
+    }
+
+    .feedback {
+      margin-top: 1em;
+      min-height: 2em;
+    }
+
+    .hint {
+      color: #ff5555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Codebreaker // Zugriff erzwingen</h1>
+  <p>Gib den 3-stelligen Zugangscode ein (Ziffern 0–9):</p>
+
+  <input type="text" id="codeInput" maxlength="3" autofocus />
+  <button onclick="checkCode()">Code prüfen</button>
+
+  <div class="feedback" id="feedback"></div>
+
+  <script>
+    const secretCode = '472'; // Du kannst das ändern oder zufällig machen
+
+    function checkCode() {
+      const input = document.getElementById('codeInput').value;
+      const feedback = document.getElementById('feedback');
+
+      if (input.length !== 3 || !/^\d{3}$/.test(input)) {
+        feedback.textContent = 'Bitte gib genau 3 Ziffern ein.';
+        return;
+      }
+
+      if (input === secretCode) {
+        feedback.innerHTML = '<span class="hint">>> Zugang gewährt. Firewall durchbrochen.</span>';
+
+        // Neue Codes freischalten
+        const unlockedCodes = [
+          "ARSKA-MITARBRTR",
+          "LUMINA-42A-HEART7",
+          "D4DELTA289",
+          "ZETTA-MITARBRTR",
+          "LUMINA-42A-VEGA9"
+        ];
+        localStorage.setItem('terminal_codes', JSON.stringify(unlockedCodes));  // Codes speichern
+        localStorage.setItem('terminal_hacked', 'true'); // Hack abgeschlossen
+
+        setTimeout(() => {
+          window.location.href = 'index.html'; // Zurück zum Terminal
+        }, 1500);
+        return;
+      }
+
+      // Hinweise generieren
+      let hints = '';
+      for (let i = 0; i < 3; i++) {
+        if (input[i] === secretCode[i]) {
+          hints += `Ziffer ${i + 1} korrekt ✓<br>`;
+        } else if (secretCode.includes(input[i])) {
+          hints += `Ziffer ${i + 1} falsch platziert ◔<br>`;
+        } else {
+          hints += `Ziffer ${i + 1} nicht enthalten ✗<br>`;
+        }
+      }
+
+      feedback.innerHTML = '<span class="hint">' + hints + '</span>';
+    }
+  </script>
+
+</body>
+</html>

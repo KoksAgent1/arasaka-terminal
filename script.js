@@ -54,15 +54,45 @@ input.addEventListener('keydown', (e) => {
 });
 
 function verifyCode() {
-  const code = document.getElementById('unlockCode').value.trim();
+  const code = document.getElementById('unlockCode').value.trim().toUpperCase();
   const feedback = document.getElementById('codeFeedback');
 
-  if (code === 'D4DELTA289') {
-    document.getElementById('lockOverlay').style.display = 'none';
-  } else {
-    feedback.textContent = 'KEIN ZUGRIFF';
+  switch (code) {
+    case 'BARANOV-A1915-0425':
+      // Voller Terminalzugriff
+      document.getElementById('lockOverlay').style.display = 'none';
+      feedback.textContent = '';
+      break;
+
+    case 'LUMINA-42A-HEART7':
+      // Spezielle Logs anzeigen oder Funktion triggern
+	  document.getElementById('lockOverlay').style.display = 'none';
+      feedback.textContent = 'Zugriff auf NEURO-Logs gewährt.';
+      showNeuroLogs(); // Eigene Funktion, z. B. Modal oder Terminal-Eintrag
+      break;
+
+    case 'D4DELTA289':
+      // Hacker Code Effekt oder UI-Aktion
+      feedback.textContent = 'Direktor Baranov – Zugriff autorisiert.';
+      loadBaranovLogs();
+      break;
+
+    case 'ARSKA-MITABRTR':
+      feedback.textContent = 'Projekt Mila wird neu initialisiert...';
+      rebootMila(); // Private Logs
+      break;
+
+    case 'MILA':
+      feedback.textContent = 'Projekt Mila wird neu initialisiert...';
+      rebootMila(); // Private Logs
+      break;
+
+    default:
+      feedback.textContent = 'KEIN ZUGRIFF';
+      break;
   }
 }
+
 
 window.onload = () => {
   document.getElementById('lockOverlay').style.display = 'flex';

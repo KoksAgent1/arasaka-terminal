@@ -7,14 +7,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-	<div id="lockOverlay">
-	<div class="scan-frame">
-		<p class="glitch-text">SYSTEM GESPERRT</p>
-		<input type="text" id="unlockCode" placeholder="Enter Access Code" />
-		<button onclick="verifyCode()">ENTSPERREN</button>
-		<p id="codeFeedback"></p>
-	</div>
-	</div>
+  <div id="lockOverlay">
+    <div class="scan-frame">
+      <p class="glitch-text">SYSTEM GESPERRT</p>
+      <input type="text" id="unlockCode" placeholder="Enter Access Code" />
+      <button onclick="verifyCode()">ENTSPERREN</button>
+      <p id="codeFeedback"></p>
+      
+      <hr style="margin: 20px 0; border-color: rgba(255, 0, 0, 0.2);" />
+      
+      <p style="text-align: center; color: #f00; font-family: monospace;">— oder —</p>
+      <button onclick="startHack()" style="margin-top: 10px;">Terminal hacken</button>
+    </div>
+  </div>
+
   <div id="terminal">
     <pre id="output">Arasaka OS v9.3 - Zugriffsebene: MITARBEITER
 Tippe <span class="cmd">hilfe</span> ein um verfügbare Befehle zu sehen.
@@ -24,6 +30,37 @@ Tippe <span class="cmd">hilfe</span> ein um verfügbare Befehle zu sehen.
       <input type="text" id="commandInput" autofocus />
     </div>
   </div>
+
+  <script>
+    // Diese Funktion prüft, ob der eingegebene Code gültig ist
+    function verifyCode() {
+      const code = document.getElementById('unlockCode').value.trim().toUpperCase();
+      const feedback = document.getElementById('codeFeedback');
+
+      // Lade freigeschaltete Codes
+      const unlockedCodes = JSON.parse(localStorage.getItem('terminal_codes') || '[D4DELTA289, LUMINA-42A-HEART7, BARANOV-A1915-0425, ARSKA-MITABRTR]');
+
+      if (unlockedCodes.includes(code)) {
+        document.getElementById('lockOverlay').style.display = 'none';
+        feedback.textContent = `Zugang gewährt: ${code}`;
+      } else {
+        feedback.textContent = 'KEIN ZUGRIFF';
+      }
+    }
+
+    function startHack() {
+      window.location.href = 'codebreaker.html'; // Minigame starten
+    }
+
+    // Wenn das Terminal gehackt wurde, entsperre es
+    window.onload = () => {
+      if (localStorage.getItem('terminal_hacked') === 'true') {
+        document.getElementById('lockOverlay').style.display = 'none';
+        localStorage.removeItem('terminal_hacked'); // Zugang nur einmalig
+      }
+    };
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
