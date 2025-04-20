@@ -95,7 +95,7 @@
   </div>
 
   <script>
-    const secretCode = ''; // Du kannst das ändern oder zufällig machen
+    let secretCode = ''; // D
     let timerValue = 60; // Initiale Timer-Zeit in Sekunden
     let timerInterval;
 
@@ -217,6 +217,7 @@
 
     // Timer starten, wenn die Seite geladen wird
     window.onload = function() {
+	  secretCode = String(Math.floor(100 + Math.random() * 900));
       startTimer();
     }
   </script>
