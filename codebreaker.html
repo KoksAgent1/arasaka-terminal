@@ -91,7 +91,7 @@
   <div id="timer" class="timer">Zeit: 60s</div> <!-- Countdown Timer -->
 
   <div id="gameOverMessage" class="game-over" style="display: none;">
-    ZEIT ABGELAUFEN! ARASAKA AGENTEN SIND UNTERWEGS.
+    Der Code konnte nicht geknackt werden.
   </div>
 
   <script>
@@ -116,7 +116,7 @@
     function gameOver() {
       document.getElementById('gameOverMessage').style.display = 'block';
       document.getElementById('codeInput').disabled = true;
-      document.getElementById('feedback').textContent = 'Du hast die Zeit überschritten! Arasaka wird dich finden!';
+      document.getElementById('feedback').textContent = 'Du hast die Zeit überschritten!';
     }
 
     // Code prüfen
