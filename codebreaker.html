@@ -176,18 +176,26 @@
       }
 
       // Hinweise generieren
-      let hints = '';
-      for (let i = 0; i < 3; i++) {
-        if (input[i] === secretCode[i]) {
-          hints += `Ziffer ${i + 1} korrekt ✓<br>`;
-        } else if (secretCode.includes(input[i])) {
-          hints += `Ziffer ${i + 1} falsch platziert ◔<br>`;
-        } else {
-          hints += `Ziffer ${i + 1} nicht enthalten ✗<br>`;
-        }
-      }
+let hints = '<div style="display: flex; gap: 10px;">';
+for (let i = 0; i < 3; i++) {
+  const digit = input[i];
+  let color = 'red';
+  let symbol = '❌';
 
-      feedback.innerHTML = '<span class="hint">' + hints + '</span>';
+  if (digit === secretCode[i]) {
+    color = 'limegreen';
+    symbol = '✅';
+  } else if (secretCode.includes(digit)) {
+    color = 'gold';
+    symbol = '⚠️';
+  }
+
+  hints += `<div style="font-size: 2em; color: ${color};">${digit}<br>${symbol}</div>`;
+}
+hints += '</div>';
+
+feedback.innerHTML = hints;
+
     }
 
     // Funktion zum Kopieren des Codes

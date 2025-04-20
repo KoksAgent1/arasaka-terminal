@@ -130,3 +130,16 @@ function rebootMila() {
 window.onload = () => {
   document.getElementById('lockOverlay').style.display = 'flex';
 };
+
+window.onload = function () {
+  const glitch = document.getElementById('glitchScreen');
+  const terminal = document.getElementById('terminal');
+
+  glitch.style.display = 'flex';
+  terminal.style.display = 'none';
+
+  setTimeout(() => {
+    glitch.style.display = 'none';
+    terminal.style.display = 'block';
+  }, 1000); // Glitch 2 Sekunden anzeigen
+};
