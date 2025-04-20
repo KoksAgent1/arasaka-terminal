@@ -1,3 +1,5 @@
+let accessLevel = 'none'; // Wird beim Login gesetzt
+
 const output = document.getElementById('output');
 const input = document.getElementById('commandInput');
 
