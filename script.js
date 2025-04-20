@@ -1,177 +1,199 @@
-let accessLevel = 'none'; // Wird beim Login gesetzt
+const output = document.getElementById("output");
+const input = document.getElementById("commandInput");
 
-const output = document.getElementById('output');
-const input = document.getElementById('commandInput');
-
-const commands = {
-  hilfe: () => {
-    return `Verfügbare Befehle:
-- hilfe: Zeigt alle verfügbaren Befehle an.
-- projekt mila: Zeigt alle Projekt Mila Daten und Befehle.
-- projekt auflistung: Listet alle verfügbaren Projekte auf.
-- crack firewall projekt mila: Bricht die Firewall von Projekt Mila durch und startet ein Minigame.
-- logs auslesen: Zeigt die entschlüsselten Logs an, wenn die Firewall durchbrochen wurde.
-- exit: Beendet die Sitzung und meldet den Benutzer ab.`;
-  },
-  'projekt auflistung': () => {
-    return `Verfügbare Projekte:
-- Projekt Mila: Geheimes Projekt zur Entwicklung eines KI-gesteuerten Agenten.
-- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka.
-- RELIC: Ein geheim gehaltenes Archiv-Projekt, das mysteriöse Daten enthält.
-- Echo Protokoll: Ein Projekt zur Überwachung und Aufzeichnung von Kommunikationskanälen.
-- ARKHEART 3.0: Das neueste KI-Experiment, das in Zusammenarbeit mit Militech entwickelt wird.`;
-  },
-  'projekt mila': () => {
-    return `Projekt Mila:
-- Projekt Mila: Geheimes Projekt zur Entwicklung eines KI-gesteuerten Agenten. Gebaut mit Hilfe von Bunny.
-	`;
-  },
- 'NEUROSAFE FIREWALL 9.2': () => {
-    return `NEUROSAFE FIREWALL 9.2:
-- NEUROSAFE FIREWALL 9.2: Die neueste Version der Firewall-Technologie von Arasaka, schwer zu knacken.
-- Eingesetzt in den Agenten Black Adam, O.
-`;
-  },
- 'RELIC': () => {
-    return `RELIC:
-- RELIC: Ein geheim gehaltenes Archiv-Projekt, das mysteriöse Daten enthält.
-`;
-  },
- 'Echo Protokoll': () => {
-    return `Echo Protokoll:
-- Echo Protokoll: Ein Projekt zur Überwachung und Aufzeichnung von Kommunikationskanälen.
-`;
-  },
- 'ARKHEART 3.0': () => {
-    return `ARKHEART:
-- ARKHEART 3.0: Das neueste KI-Experiment, das in Zusammenarbeit mit Militech entwickelt wird.`;
-  },
-  'crack firewall projekt mila': () => {
-    window.location.href = 'pong.html'; // Minigame starten
-    return 'Initiierung des Projekts Mila... Starte Minigame, um Firewall zu knacken.';
-  },
-  'logs auslesen': () => {
-    const unlocked = localStorage.getItem('firewall_mila_breached') === 'true';
-    return unlocked
-      ? `>> Projekt Mila – Entschlüsselte Protokolle:
-        [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%
-        [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.
-        [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.
-        [2025-03-18 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.
-        [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.
-        [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%.
-        [2025-04-18 23:10] Subjekt online.
-        [2025-04-19 gd:2§] Unbekannt
-        [2025-04-19 21:57] Unbekannte Daten entwendet.
-        [2025-04-19 23:00] Fremdzugriff erkannt.
-        [2025-04-20 04:00] Deepscan, Systemneustart, Analyse gestartet.
-
-        End of file.`
-      : `>> Zugriff verweigert. Firewall nicht geknackt.`;
-  },
-  exit: () => {
-    return `Sitzung beendet. Abmeldung...`;
-  }
+const commandsByAccess = {
+  employee: ["hilfe", "projekte", "logs auslesen"],
+  admin: ["hilfe", "projekt auflistung", "admin log", "logs auslesen", "systemstatus", "benutzer", "shutdown"],
+  ripperdoc: ["hilfe", "implantate", "patientendaten", "crack firewall"],
+  netrunner: ["hilfe", "netzwerk scan", "infiltriere", "backdoor", "crack firewall"]
 };
 
-input.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    const cmd = input.value.trim();
-    output.innerText += `\n> ${cmd}`;
-    const response = commands[cmd] ? commands[cmd]() : 'Unbekannter Befehl. Tippe hilfe ein.';
-    output.innerText += `\n${response}`;
-    input.value = '';
-    window.scrollTo(0, document.body.scrollHeight);
+function writeOutput(text) {
+  output.innerText += `\n${text}`;
+  output.scrollTop = output.scrollHeight;
+}
+
+function executeCommand(cmd) {
+  const accessLevel = localStorage.getItem("accessLevel") || "employee";
+  const allowedCommands = commandsByAccess[accessLevel] || [];
+
+  if (!allowedCommands.includes(cmd)) {
+    writeOutput(`Befehl "${cmd}" ist für Zugriffsebene "${accessLevel.toUpperCase()}" nicht erlaubt.`);
+    return;
   }
-});
 
-function verifyCode() { 
-  const code = document.getElementById('unlockCode').value.trim().toUpperCase();
-  const feedback = document.getElementById('codeFeedback');
-
-  switch (code) {
-    case 'BARANOV-A1915-0425':
-      // Voller Terminalzugriff
-      document.getElementById('lockOverlay').style.display = 'none';
-      feedback.textContent = 'Hallo Herr Direktor Baranov. Vollen Zugriff gewährt.';
+  switch (cmd) {
+    case "hilfe":
+      showHelp(accessLevel);  // Aufruf der neuen Funktion für hilfe
       break;
 
-    case 'LUMINA-42A-HEART7':
-      // Spezielle Logs anzeigen oder Funktion triggern
-      document.getElementById('lockOverlay').style.display = 'none';
-      feedback.textContent = 'Zugriff auf NEURO-Logs gewährt.';
-      showNeuroLogs(); // Eigene Funktion, z. B. Modal oder Terminal-Eintrag
+    case "projekte":
+      writeOutput("Projekte:\n- Projekt Mila\n- Echo Protokoll\n- RELIC Network");
       break;
 
-    case 'D4DELTA289':
-      // Hacker Code Effekt oder UI-Aktion
-      feedback.textContent = 'Arasaka Interna – Zugriff verweigert.';
-      loadBaranovLogs();
-	  window.location.href = 'hacking.html';
+    case "logs auslesen":
+      writeOutput("Letzte Systemlogs:\n- [12:04] Zugriff durch Benutzer: SYSTEM\n- [12:05] Projektdatei geöffnet.");
+      break;
+ 
+	case "admin log":
+      writeOutput("Letzte Systemlogs:\n- [12:04] Zugriff durch Benutzer: SYSTEM\n- [12:05] Projektdatei geöffnet.\n- [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%\n- [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.\n- [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.\n- [2025-03-18 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.\n- [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.\n- [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%\n- [2025-04-18 23:10] Subjekt online.\n- [2025-04-19 gd:2§] Unbekannt\n- [2025-04-19 21:57] Unbekannte Daten entwendet.\n- [2025-04-19 23:00] Fremdzugriff erkannt.\n- [2025-04-20 04:00] Deepscan, Systemneustart, Analyse gestartet.\n- [2025-04-20 22:03] Analyse Durchgeführt.");
       break;
 
-    case 'ARSKA-MITABRTR':
-      feedback.textContent = 'Projekt Mila wird neu initialisiert...';
-      rebootMila(); // Private Logs
+    case "systemstatus":
+      writeOutput("Systemstatus:\nCPU: 92%\nNetzwerk: 4 Verbindungen\nAbwehrsystem: aktiv");
       break;
 
-    case 'MILA':
-      feedback.textContent = 'Projekt wird neu initialisiert...';
-      rebootMila(); // Private Logs
+    case "benutzer":
+      writeOutput("Aktive Benutzer:\n- Baranov (ADMIN)\n- Bunny (RIPPERDOC)");
+      break;
+
+    case "shutdown":
+      writeOutput("System fährt herunter...");
+      setTimeout(() => {
+        document.body.innerHTML = "<pre style='color: red; text-align: center;'>ARASAKA OS WURDE DEAKTIVIERT</pre>";
+      }, 2000);
+      break;
+
+    case "implantate":
+      writeOutput("Implantatdaten:\n- ARKHEART 3.0: aktiv\n- ARASAKA PANOPTICON: inaktiv\n- NEUROSAFE FIREWALL 9.2: 97%\n- TAIKETSU FRAME X-92: isoliert\n- OMEGA LINK PORT: aktiv\n- ONI-SYNC: stabil\n- ARASAKA GHOST PROTOCOL: inaktiv\n- SANGUINE-X BLOODLOOP: Version 2.4\n- Neuralinterface: stabil");
+      break;
+
+    case "patientendaten":
+      writeOutput("Patientendaten:\n- ID: MILA\n- Status: UnBEkaNnt\n- Diagnose: Biochip-Fehlfunktion");
+      break;
+
+    case "netzwerk scan":
+      writeOutput("Netzwerkscan gestartet...\n> 3 Nodes gefunden\n> Firewalls erkannt\n> Zugänge kartiert");
+      break;
+
+    case "infiltriere":
+      writeOutput("Starte Infiltration...\n> Verbindung mit Host 193.41.226.22:9013\n> Zugriff verschlüsselt...");
+      break;
+
+    case "backdoor":
+      writeOutput("Backdoor-Modul aktiviert\n>befehl: crack firewall\n> Zugriff auf internen Knoten vorbereitet...");
+      break;
+
+    case "crack firewall":
+      writeOutput("Starte-Infiltration \n>...");
+	  window.location.href = 'pong.html';
       break;
 
     default:
-      feedback.textContent = 'KEIN ZUGRIFF';
+      writeOutput(`Unbekannter Befehl: "${cmd}"`);
+  }
+}
+
+function showHelp(accessLevel) {
+  let helpText = "";
+  let helpStyle = "";
+
+  switch (accessLevel) {
+    case "employee":
+      helpText = `
+        Hilfe für Mitarbeiter:
+        - "hilfe" : Verfügbare Befehle anzeigen
+        - "projekt auflistung" : Liste der aktiven Projekte
+        - "logs auslesen" : Letzte Systemprotokolle anzeigen
+      `;
+      helpStyle = `
+        background: #002b36;
+        color: #0ff;
+        padding: 15px;
+        border: 2px solid #0ff;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 1.1em;
+      `;
       break;
+
+    case "admin":
+      helpText = `
+        Hilfe für Administrator:
+        - "hilfe" : Verfügbare Befehle anzeigen
+        - "projekt auflistung" : Liste der aktiven Projekte
+        - "admin log" : Admin Protokoll anzeigen
+        - "logs auslesen" : Letzte Systemprotokolle anzeigen
+        - "systemstatus" : Zeigt den aktuellen Systemstatus an
+        - "benutzer" : Zeigt alle aktiven Benutzer
+        - "shutdown" : System herunterfahren
+      `;
+      helpStyle = `
+        background: #b22222;
+        color: #fff;
+        padding: 15px;
+        border: 2px solid #f00;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 1.1em;
+      `;
+      break;
+
+    case "ripperdoc":
+      helpText = `
+        Hilfe für Ripperdocs:
+        - "hilfe" : Verfügbare Befehle anzeigen
+        - "implantate" : Zeigt alle implantierbaren Systeme
+        - "patientendaten" : Zeigt aktuelle Patientendaten
+      `;
+      helpStyle = `
+        background: #1e90ff;
+        color: #fff;
+        padding: 15px;
+        border: 2px solid #00f;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 1.1em;
+      `;
+      break;
+
+    case "netrunner":
+      helpText = `
+        Hilfe für Netrunner:
+        - "hilfe" : Verfügbare Befehle anzeigen
+        - "netzwerk scan" : Scannt das Netzwerk auf Sicherheitslücken
+        - "infiltriere" : Versucht, in das Zielnetzwerk einzudringen
+        - "backdoor" : Öffnet eine Hintertür für späteren Zugriff
+        - "crack x x" : versuch um x zu knacken, vorherige Schritte schalten Befehle frei
+      `;
+      helpStyle = `
+        background: #32cd32;
+        color: #000;
+        padding: 15px;
+        border: 2px solid #0f0;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 1.1em;
+      `;
+      break;
+
+    default:
+      helpText = "Unbekannte Zugriffsebene. Keine Hilfe verfügbar.";
+      helpStyle = `
+        background: #000;
+        color: #ff6347;
+        padding: 15px;
+        border: 2px solid #ff6347;
+        border-radius: 5px;
+        font-family: monospace;
+        font-size: 1.1em;
+      `;
   }
 
+  // Hilfe-Ausgabe mit Stil anwenden
+  const helpDiv = document.createElement("div");
+  helpDiv.textContent = helpText;
+  helpDiv.style = helpStyle;
+  output.innerHTML = "";
+  output.appendChild(helpDiv);
 }
 
-function showNeuroLogs() {
-  const neuroLogs = `
-    >> NEUROSAFE SYSTEM 9.2 - Protokolle:
-    [2025-04-19 11:45] Neuronale Synchronisation begonnen. Subjekt: Unbekannt.
-    [2025-04-19 14:23] Systeminitialisierung abgeschlossen. Zugriff auf gesperrte Daten.
-    [2025-04-19 16:30] Neuropathische Daten aus sensiblen Quellen extrahiert.
-    [2025-04-20 03:00] Sicherheitsverletzung im Protokoll, Investigation läuft...
-    [2025-04-20 04:12] Ungewöhnliche neuronale Aktivität festgestellt.
 
-    End of file.`;
-  output.innerText += `\n${neuroLogs}`;
-}
-
-function loadBaranovLogs() {
-  const baranovLogs = `
-    >> DIREKTOR BARANOV - PRIVATE LOGS:
-    [2025-04-17 00:00] Initialisierung abgeschlossen. Projektstatus: Aktiv.
-    [2025-04-17 03:30] Arasaka-Eindämmung durchbrochen. Neuronale Synchronisation im Gange.
-    [2025-04-18 01:15] Überwachungsprotokolle der letzten 48 Stunden.
-    [2025-04-18 21:45] Zugriff auf Projekt Mila - Initiierung des Reboot-Vorgangs.
-
-    End of file.`;
-  output.innerText += `\n${baranovLogs}`;
-}
-
-function rebootMila() {
-  output.innerText += `\n>> Projekt Mila wird neu gestartet...`;
-  setTimeout(() => {
-    output.innerText += `\n>> Projekt Mila erfolgreich neu initialisiert. Zugriff auf Daten gewährt.`;
-  }, 2000);
-}
-
-window.onload = () => {
-  document.getElementById('lockOverlay').style.display = 'flex';
-};
-
-window.onload = function () {
-  const glitch = document.getElementById('glitchScreen');
-  const terminal = document.getElementById('terminal');
-
-  glitch.style.display = 'flex';
-  terminal.style.display = 'none';
-
-  setTimeout(() => {
-    glitch.style.display = 'none';
-    terminal.style.display = 'block';
-  }, 1000); // Glitch 2 Sekunden anzeigen
-};
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const command = input.value.trim().toLowerCase();
+    writeOutput(`> ${command}`);
+    executeCommand(command);
+    input.value = "";
+  }
+});

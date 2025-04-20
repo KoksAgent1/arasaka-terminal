@@ -13,20 +13,20 @@
       <input type="text" id="unlockCode" placeholder="Enter Access Code" />
       <button onclick="verifyCode()">ENTSPERREN</button>
       <p id="codeFeedback"></p>
-      
+
       <hr style="margin: 20px 0; border-color: rgba(255, 0, 0, 0.2);" />
-      
+
       <p style="text-align: center; color: #f00; font-family: monospace;">— oder —</p>
       <button onclick="startHack()" style="margin-top: 10px;">Terminal hacken</button>
     </div>
   </div>
-	<div id="glitchScreen" class="glitch-container">
-  <div class="glitch-text">STARTE NEURAL LINK ZU ARASAKA OS...</div>
-	</div>
+
+  <div id="glitchScreen" class="glitch-container">
+    <div class="glitch-text">STARTE NEURAL LINK ZU ARASAKA OS...</div>
+  </div>
+
   <div id="terminal">
-    <pre id="output">Arasaka OS v9.3 - Zugriffsebene: MITARBEITER
-Tippe <span class="cmd">hilfe</span> ein um verfügbare Befehle zu sehen.
-</pre>
+    <pre id="output"></pre>
     <div class="input-line">
       <span class="prompt">></span>
       <input type="text" id="commandInput" autofocus />
@@ -34,32 +34,83 @@ Tippe <span class="cmd">hilfe</span> ein um verfügbare Befehle zu sehen.
   </div>
 
   <script>
-    // Diese Funktion prüft, ob der eingegebene Code gültig ist
     function verifyCode() {
       const code = document.getElementById('unlockCode').value.trim().toUpperCase();
       const feedback = document.getElementById('codeFeedback');
+      let accessLevel = '';
+      let welcome = '';
 
-      // Lade freigeschaltete Codes
-      const unlockedCodes = JSON.parse(localStorage.getItem('terminal_codes') || '[D4DELTA289, LUMINA-42A-HEART7, BARANOV-A1915-0425, ARSKA-MITABRTR]');
+      switch (code) {
+        case 'BARANOV-A1915-0425':
+          accessLevel = 'admin';
+          welcome = 'Zugriffsebene: ADMINISTRATOR – Willkommen, Direktor Baranov.';
+          break;
 
-      if (unlockedCodes.includes(code)) {
-        document.getElementById('lockOverlay').style.display = 'none';
-        feedback.textContent = `Zugang gewährt: ${code}`;
-      } else {
-        feedback.textContent = 'KEIN ZUGRIFF';
+        case 'ARSKA-MITABRTR':
+          accessLevel = 'employee';
+          welcome = 'Zugriffsebene: MITARBEITER – Willkommen bei Arasaka.';
+          break;
+
+        case 'LUMINA-42A-HEART7':
+          accessLevel = 'ripperdoc';
+          welcome = 'Zugriffsebene: RIPPERDOC – Medizinisches Interface geladen.';
+          break;
+
+        case 'D4DELTA289':
+          localStorage.setItem('accessLevel', 'netrunner');
+          window.location.href = 'hacking.html';
+          return;
+
+        default:
+          feedback.textContent = 'KEIN ZUGRIFF';
+          return;
       }
+
+      localStorage.setItem('accessLevel', accessLevel);
+      document.getElementById('lockOverlay').style.display = 'none';
+      document.getElementById('output').innerText =
+        `Arasaka OS v9.3\n${welcome}\nTippe "hilfe" ein, um verfügbare Befehle zu sehen.`;
     }
 
     function startHack() {
-      window.location.href = 'codebreaker.html'; // Minigame starten
+      window.location.href = 'codebreaker.html';
     }
 
-    // Wenn das Terminal gehackt wurde, entsperre es
     window.onload = () => {
-      if (localStorage.getItem('terminal_hacked') === 'true') {
-        document.getElementById('lockOverlay').style.display = 'none';
-        localStorage.removeItem('terminal_hacked'); // Zugang nur einmalig
-      }
+      const glitch = document.getElementById('glitchScreen');
+      const terminal = document.getElementById('terminal');
+
+      glitch.style.display = 'flex';
+      terminal.style.display = 'none';
+
+      setTimeout(() => {
+        glitch.style.display = 'none';
+        terminal.style.display = 'block';
+
+        if (localStorage.getItem('terminal_hacked') === 'true') {
+          document.getElementById('lockOverlay').style.display = 'none';
+          const level = localStorage.getItem('accessLevel') || 'employee';
+          let welcome = '';
+
+          switch (level) {
+            case 'admin':
+              welcome = 'Zugriffsebene: ADMINISTRATOR – Willkommen, Direktor Baranov.';
+              break;
+            case 'ripperdoc':
+              welcome = 'Zugriffsebene: RIPPERDOC – Medizinisches Interface geladen.';
+              break;
+            case 'netrunner':
+              welcome = 'Zugriffsebene: NETRUNNER – Systemkern bereit zur Infiltration.';
+              break;
+            default:
+              welcome = 'Zugriffsebene: MITARBEITER – Willkommen bei Arasaka.';
+          }
+
+          document.getElementById('output').innerText =
+            `Arasaka OS v9.3\n${welcome}\nTippe "hilfe" ein, um verfügbare Befehle zu sehen.`;
+          localStorage.removeItem('terminal_hacked');
+        }
+      }, 1000);
     };
   </script>
 

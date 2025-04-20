@@ -75,8 +75,17 @@
         result.textContent = ">>> ZUGRIFF GEWÄHRT – Terminal freigeschaltet!";
         result.style.color = "#0f0";
         setTimeout(() => {
-          localStorage.setItem("deltaAccessGranted", "true");
-          window.location.href = "index.html";
+localStorage.setItem("terminal_hacked", "true");
+localStorage.setItem("accessLevel", "netrunner");
+
+let unlocked = JSON.parse(localStorage.getItem('terminal_codes') || '[]');
+if (!unlocked.includes("D4DELTA289")) {
+  unlocked.push("D4DELTA289");
+  localStorage.setItem("terminal_codes", JSON.stringify(unlocked));
+}
+
+window.location.href = "index.html";
+
         }, 2000);
       } else {
         result.textContent = ">>> FALSCHER CODE – Versuche es erneut.";
