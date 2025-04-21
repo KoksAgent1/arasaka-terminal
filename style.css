@@ -188,3 +188,39 @@ body {
 .ripperdoc .ascii-art {
   display: none;
 }
+
+.breach-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 40px);
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.breach-cell {
+  width: 40px;
+  height: 40px;
+  background: black;
+  color: lime;
+  border: 1px solid #0f0;
+  text-align: center;
+  line-height: 40px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.breach-cell.selected {
+  background: lime;
+  color: black;
+}
+
+.terminal-button {
+  background: transparent;
+  border: 1px solid lime;
+  color: lime;
+  padding: 5px 10px;
+  font-family: monospace;
+  margin-top: 10px;
+  cursor: pointer;
+}

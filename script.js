@@ -2,10 +2,10 @@ const output = document.getElementById("output");
 const input = document.getElementById("commandInput");
 
 const commandsByAccess = {
-  employee: ["hilfe", "projekte", "logs auslesen"],
-  admin: ["hilfe", "projekt auflistung", "admin log", "logs auslesen", "systemstatus", "benutzer", "shutdown"],
-  ripperdoc: ["hilfe", "implantate", "patientendaten", "crack firewall"],
-  netrunner: ["hilfe", "netzwerk scan", "infiltriere", "backdoor", "crack firewall"]
+  employee: ["hilfe", "start breach", "projekte", "logs auslesen"],
+  admin: ["hilfe", "start breach", "projekt auflistung", "admin log", "logs auslesen", "systemstatus", "benutzer", "shutdown"],
+  ripperdoc: ["hilfe", "start breach", "implantate", "patientendaten", "crack firewall"],
+  netrunner: ["hilfe", "start breach", "netzwerk scan", "infiltriere", "backdoor", "crack firewall"]
 };
 
 function writeOutput(text) {
@@ -78,6 +78,14 @@ function executeCommand(cmd) {
       writeOutput("Starte-Infiltration \n>...");
 	  window.location.href = 'pong.html';
       break;
+
+	case "start breach":
+	writeOutput("Starte Breach-Protokoll...\n>> Initialisiere Zugriffsmatrix...");
+	startBreachProtocol(); //Funktion Mini-Game
+	
+	document.getElementById("breach-status").innerText = ">> Zugriffsmatrix aktiv. Beginne in Zeile 0. Wechsle Zeile/Spalte im Wechsel.";
+	break;
+
 
     default:
       writeOutput(`Unbekannter Befehl: "${cmd}"`);
@@ -187,6 +195,181 @@ function showHelp(accessLevel) {
   output.innerHTML = "";
   output.appendChild(helpDiv);
 }
+function startBreachProtocol() {
+  document.getElementById("breach-container").style.display = "block";
+  initBreachGrid();
+  highlightGoalInMatrix();
+
+}
+
+const breachMatrixSize = 6;
+const breachBufferSize = 6;
+const breachCodes = ["BD", "1C", "E9", "55", "FF", "7A"];
+let breachMatrix = [];
+let breachGoal = [];
+let breachSelected = [];
+let isRowTurn = true;
+let currentIndex = 0;
+
+function getRandomCode() {
+  return breachCodes[Math.floor(Math.random() * breachCodes.length)];
+}
+
+function initBreachGrid() {
+  const grid = document.getElementById("breach-grid");
+  grid.innerHTML = "";
+  breachMatrix = [];
+  breachSelected = [];
+  isRowTurn = true;
+  currentIndex = 0;
+
+  // Ziel-Sequenz generieren
+  breachGoal = Array.from({ length: 3 }, getRandomCode);
+  document.getElementById("breach-sequence").innerText = "Ziel: " + breachGoal.join(" ");
+
+  // Grid mit Platzhaltern initialisieren
+  for (let i = 0; i < breachMatrixSize * breachMatrixSize; i++) {
+    breachMatrix.push(null);
+  }
+
+  // Zielrichtung wählen (true = horizontal, false = vertikal)
+  const isHorizontal = Math.random() < 0.5;
+
+  // Startposition berechnen
+  let startRow, startCol;
+  if (isHorizontal) {
+    startRow = Math.floor(Math.random() * breachMatrixSize);
+    startCol = Math.floor(Math.random() * (breachMatrixSize - breachGoal.length));
+  } else {
+    startRow = Math.floor(Math.random() * (breachMatrixSize - breachGoal.length));
+    startCol = Math.floor(Math.random() * breachMatrixSize);
+  }
+
+  // Zielsequenz einfügen
+  for (let i = 0; i < breachGoal.length; i++) {
+    const row = startRow + (isHorizontal ? 0 : i);
+    const col = startCol + (isHorizontal ? i : 0);
+    const index = row * breachMatrixSize + col;
+    breachMatrix[index] = breachGoal[i];
+  }
+
+  // Rest mit zufälligen Codes füllen
+  for (let i = 0; i < breachMatrix.length; i++) {
+    if (breachMatrix[i] === null) {
+      breachMatrix[i] = getRandomCode();
+    }
+  }
+
+  // DOM-Elemente erstellen und korrekt befüllen
+  for (let i = 0; i < breachMatrix.length; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("breach-cell");
+    cell.dataset.index = i;
+    cell.innerText = breachMatrix[i]; // Jetzt korrekt gefüllt
+    cell.addEventListener("click", () => selectBreachCell(i));
+    grid.appendChild(cell);
+  }
+
+  highlightGoalInMatrix(); // Highlight direkt nach Anzeige
+  updateSelectedDisplay();
+  document.getElementById("breach-status").innerText = ">> Starte Breach-Protokoll...";
+}
+
+
+
+function selectBreachCell(index) {
+  const row = Math.floor(index / breachMatrixSize);
+  const col = index % breachMatrixSize;
+
+  if (breachSelected.length >= breachBufferSize) return;
+
+  if ((isRowTurn && row !== currentIndex) || (!isRowTurn && col !== currentIndex)) return;
+
+  document.querySelectorAll(".breach-cell")[index].classList.add("selected");
+  breachSelected.push(breachMatrix[index]);
+
+  currentIndex = isRowTurn ? col : row;
+  isRowTurn = !isRowTurn;
+  
+
+  updateSelectedDisplay();
+  checkBreachSequence();
+  
+  highlightSelectableCells(); // nach jedem Klick neu berechnen
+  
+}
+
+function updateSelectedDisplay() {
+  document.getElementById("breach-selected").innerText = "Auswahl: " + breachSelected.join(" ");
+}
+
+function checkBreachSequence() {
+  const selectedStr = breachSelected.join(" ");
+  const goalStr = breachGoal.join(" ");
+
+  if (selectedStr.includes(goalStr)) {
+    document.getElementById("breach-status").innerText = ">> Zugriff gewährt: Hack erfolgreich.";
+    enableTerminalInput(); // falls du das eingebaut hast
+  } else if (breachSelected.length === breachBufferSize) {
+    document.getElementById("breach-status").innerText = ">> Zugriff verweigert: Protokoll fehlgeschlagen.";
+    enableTerminalInput();
+  }
+}
+
+
+function resetBreach() {
+  initBreachGrid();
+}
+
+function highlightSelectableCells() {
+  const cells = document.querySelectorAll(".breach-cell");
+  cells.forEach(cell => {
+    const index = parseInt(cell.dataset.index);
+    const row = Math.floor(index / breachMatrixSize);
+    const col = index % breachMatrixSize;
+
+    // Nur erlaubte Zellen hervorheben
+    const allowed = isRowTurn ? (row === currentIndex) : (col === currentIndex);
+    cell.style.opacity = allowed ? "1" : "0.3";
+    cell.style.pointerEvents = allowed ? "auto" : "none";
+  });
+}
+function highlightGoalInMatrix() {
+  const cells = document.querySelectorAll(".breach-cell");
+
+  // Horizontal prüfen
+  for (let row = 0; row < breachMatrixSize; row++) {
+    for (let col = 0; col <= breachMatrixSize - breachGoal.length; col++) {
+      const start = row * breachMatrixSize + col;
+      const slice = breachMatrix.slice(start, start + breachGoal.length).join(" ");
+      if (slice === breachGoal.join(" ")) {
+        for (let i = 0; i < breachGoal.length; i++) {
+          const index = start + i;
+          cells[index].style.backgroundColor = "#3333aa";
+          cells[index].style.border = "2px solid #77f";
+        }
+      }
+    }
+  }
+
+  // Vertikal prüfen
+  for (let col = 0; col < breachMatrixSize; col++) {
+    for (let row = 0; row <= breachMatrixSize - breachGoal.length; row++) {
+      const indexes = [];
+      for (let i = 0; i < breachGoal.length; i++) {
+        indexes.push((row + i) * breachMatrixSize + col);
+      }
+      const slice = indexes.map(idx => breachMatrix[idx]).join(" ");
+      if (slice === breachGoal.join(" ")) {
+        indexes.forEach(idx => {
+          cells[idx].style.backgroundColor = "#3333aa";
+          cells[idx].style.border = "2px solid #77f";
+        });
+      }
+    }
+  }
+}
+
 
 
 input.addEventListener("keydown", (e) => {
@@ -197,3 +380,4 @@ input.addEventListener("keydown", (e) => {
     input.value = "";
   }
 });
+
