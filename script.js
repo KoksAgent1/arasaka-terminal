@@ -2,10 +2,10 @@ const output = document.getElementById("output");
 const input = document.getElementById("commandInput");
 
 const commandsByAccess = {
-  employee: ["hilfe", "start breach", "projekte", "logs auslesen"],
-  admin: ["hilfe", "start breach", "projekt auflistung", "admin log", "logs auslesen", "systemstatus", "benutzer", "shutdown"],
-  ripperdoc: ["hilfe", "start breach", "implantate", "patientendaten", "crack firewall"],
-  netrunner: ["hilfe", "start breach", "netzwerk scan", "infiltriere", "backdoor", "crack firewall"]
+  employee: ["hilfe", "ncpd akten", "start breach", "projekte"],
+  admin: ["hilfe", "interne logs", "ncpd akten", "society daten", "start breach", "projekt auflistung", "admin log", "logs auslesen", "systemstatus", "benutzer", "shutdown"],
+  ripperdoc: ["hilfe", "interne logs", "ncpd akten", "society daten", "start breach", "implantate", "patientendaten", "crack firewall"],
+  netrunner: ["hilfe", "interne logs", "society daten", "ncpd akten", "start breach", "netzwerk scan", "infiltriere", "backdoor", "crack firewall"]
 };
 
 function writeOutput(text) {
@@ -33,6 +33,15 @@ function executeCommand(cmd) {
 
     case "logs auslesen":
       writeOutput("Letzte Systemlogs:\n- [12:04] Zugriff durch Benutzer: SYSTEM\n- [12:05] Projektdatei geöffnet.");
+      break;
+    case "society daten":
+      writeOutput("\n- [Eintrag Unbekannt]In einer trüben Nacht wurde ich von einer Person aufgegriffen die entweder ein eigenständiger Netrunner ist oder doch Teil von Society?(Dragon?)\n- [Eintrag Unbekannt]Ich war mit Zac und Kyle unterwegs und wir haben den Standort von Society in Sektor 3 gefunden.\n- [Eintrag Unbekannt]Habe mich mit Zac nochmal auf die Suche gemacht und bin dabei in die backdoor von Society gefallen. Zac hat bei meiner Rettung den Kontakt zu Venom von Society hergestellt.\n- [Eintrag Unbekannt]Einige Tage später wurden wir von Ghost kontaktiert, der Kopf von Society. Er bat uns um ein paar Dinge.\n- [Eintrag Unbekannt]Durch Ghost habe ich von Dragon, Venom und noch einer Person erfahren.\n- [Eintrag Unbekannt]Smoke ist auch Teil von Society, er konnte mein ursprüngliches Geburtsdatum auslesen und nicht nur das.\n- [Eintrag Unbekannt]Venom und Smoke haben die Casino Roboter hacken können.");
+      break;
+    case "ncpd akten":
+      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 5]Der General hat die Anfrage vom Direktor zwecks Waffenschein abgelehnt.\n- [Eintrag 5]Maloun ist der Stiefvater von Kyle und Bella ist die Frau vom Captain.\n- [Eintrag 5]General Lee wurde degradiert. Er ist nun Commander.\n- [Eintrag 5]Das NCPD sucht nach Society.\n- [Eintrag 5]Das NCPD besitzt eine Roboter Einheit, B7, diese scheint effizienter zu sein als die Vorgängermodelle.");
+      break;
+    case "interne logs":
+      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 2]Habe durch Kaael rausgefunden, dass gewisse B5 Einheiten an dieser Immobilie waren und auf das NCPD schossen.\n- [Eintrag 4]Blue selber war die letzten Tage instabil, weil diverse Programme von Arasaka und Militech gegeneinander agiert haben. Mittlerweile gehts ihr aber besser.\n- [Eintrag 3]Durch Blue konnte ich von diversen Cyberware Projekten erfahren. Dahingehen brauch ich mehr Informationen. HK hat Sie erbaut.");
       break;
  
 	case "admin log":
@@ -124,6 +133,9 @@ function showHelp(accessLevel) {
         - "logs auslesen" : Letzte Systemprotokolle anzeigen
         - "systemstatus" : Zeigt den aktuellen Systemstatus an
         - "benutzer" : Zeigt alle aktiven Benutzer
+        - "interne logs" : Systemdaten
+        - "ncpd akten" : Daten über das NCPD
+        - "society daten" : Society - Netrunner
         - "shutdown" : System herunterfahren
       `;
       helpStyle = `
