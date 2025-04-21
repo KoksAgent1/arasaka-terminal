@@ -175,6 +175,8 @@ function showHelp(accessLevel) {
         - "infiltriere" : Versucht, in das Zielnetzwerk einzudringen
         - "backdoor" : Öffnet eine Hintertür für späteren Zugriff
         - "crack x x" : versuch um x zu knacken, vorherige Schritte schalten Befehle frei
+        - "ncpd akten" : Daten über das NCPD
+        - "society daten" : Society - Netrunner
       `;
       helpStyle = `
         background: #32cd32;
