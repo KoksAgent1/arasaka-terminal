@@ -41,7 +41,7 @@ function executeCommand(cmd) {
       writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 5]Der General hat die Anfrage vom Direktor zwecks Waffenschein abgelehnt.\n- [Eintrag 5]Maloun ist der Stiefvater von Kyle und Bella ist die Frau vom Captain.\n- [Eintrag 5]General Lee wurde degradiert. Er ist nun Commander.\n- [Eintrag 5]Das NCPD sucht nach Society.\n- [Eintrag 5]Das NCPD besitzt eine Roboter Einheit, B7, diese scheint effizienter zu sein als die Vorgängermodelle.");
       break;
     case "interne logs":
-      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 2]Habe durch Kaael rausgefunden, dass gewisse B5 Einheiten an dieser Immobilie waren und auf das NCPD schossen.\n- [Eintrag 4]Blue selber war die letzten Tage instabil, weil diverse Programme von Arasaka und Militech gegeneinander agiert haben. Mittlerweile gehts ihr aber besser.\n- [Eintrag 3]Durch Blue konnte ich von diversen Cyberware Projekten erfahren. Dahingehen brauch ich mehr Informationen. HK hat Sie erbaut.");
+      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 2]Habe durch Kaael rausgefunden, dass gewisse B5 Einheiten an dieser Immobilie waren und auf das NCPD schossen.\n- [Eintrag 4]Blue selber war die letzten Tage instabil, weil diverse Programme von Arasaka und Militech gegeneinander agiert haben. Mittlerweile gehts ihr aber besser.\n- [Eintrag 3]Durch Blue konnte ich von diversen Cyberware Projekten erfahren. Dahingehend brauch ich mehr Informationen. HK hat Sie erbaut.");
       break;
  
 	case "admin log":
