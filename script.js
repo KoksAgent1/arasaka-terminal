@@ -31,21 +31,24 @@ function executeCommand(cmd) {
       writeOutput("Projekte:\n- Projekt Mila\n- Echo Protokoll\n- RELIC Network");
       break;
 
-    case "logs auslesen":
-      writeOutput("Letzte Systemlogs:\n- [12:04] Zugriff durch Benutzer: SYSTEM\n- [12:05] Projektdatei geöffnet.");
-      break;
+	case "logs auslesen":
+	  const now = new Date();
+	  const timeString = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+	  writeOutput(`Letzte Systemlogs:\n- [${timeString}] Zugriff durch Benutzer: SYSTEM\n- [${timeString}] Projektdatei geöffnet.`);
+	  break;
+
     case "society daten":
       writeOutput("\n- [Eintrag Unbekannt]In einer trüben Nacht wurde ich von einer Person aufgegriffen die entweder ein eigenständiger Netrunner ist oder doch Teil von Society?(Dragon?)\n- [Eintrag Unbekannt]Ich war mit Zac und Kyle unterwegs und wir haben den Standort von Society in Sektor 3 gefunden.\n- [Eintrag Unbekannt]Habe mich mit Zac nochmal auf die Suche gemacht und bin dabei in die backdoor von Society gefallen. Zac hat bei meiner Rettung den Kontakt zu Venom von Society hergestellt.\n- [Eintrag Unbekannt]Einige Tage später wurden wir von Ghost kontaktiert, der Kopf von Society. Er bat uns um ein paar Dinge.\n- [Eintrag Unbekannt]Durch Ghost habe ich von Dragon, Venom und noch einer Person erfahren.\n- [Eintrag Unbekannt]Smoke ist auch Teil von Society, er konnte mein ursprüngliches Geburtsdatum auslesen und nicht nur das.\n- [Eintrag Unbekannt]Venom und Smoke haben die Casino Roboter hacken können.");
       break;
     case "ncpd akten":
-      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 5]Der General hat die Anfrage vom Direktor zwecks Waffenschein abgelehnt.\n- [Eintrag 5]Maloun ist der Stiefvater von Kyle und Bella ist die Frau vom Captain.\n- [Eintrag 5]General Lee wurde degradiert. Er ist nun Commander.\n- [Eintrag 5]Das NCPD sucht nach Society.\n- [Eintrag 5]Das NCPD besitzt eine Roboter Einheit, B7, diese scheint effizienter zu sein als die Vorgängermodelle.");
+      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 1]Der General hat die Anfrage vom Direktor zwecks Waffenschein abgelehnt.\n- [Eintrag 2]Maloun ist der Stiefvater von Kyle und Bella ist die Frau vom Captain.\n- [Eintrag 3]General Lee wurde degradiert. Er ist nun Commander.\n- [Eintrag 4]Das NCPD sucht nach Society.\n- [Eintrag 5]Das NCPD besitzt eine Roboter Einheit, B7, diese scheint effizienter zu sein als die Vorgängermodelle.");
       break;
     case "interne logs":
-      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 2]Habe durch Kaael rausgefunden, dass gewisse B5 Einheiten an dieser Immobilie waren und auf das NCPD schossen.\n- [Eintrag 4]Blue selber war die letzten Tage instabil, weil diverse Programme von Arasaka und Militech gegeneinander agiert haben. Mittlerweile gehts ihr aber besser.\n- [Eintrag 3]Durch Blue konnte ich von diversen Cyberware Projekten erfahren. Dahingehend brauch ich mehr Informationen. HK hat Sie erbaut.");
+      writeOutput("Aufzeichnungen:\n- [April 2025] Black Adam: Cyborg-KI\n- Projektdatei geöffnet.\n- [Eintrag 1]Habe durch Kaael rausgefunden, dass gewisse B5 Einheiten an dieser Immobilie waren und auf das NCPD schossen.\n- [Eintrag 2]Blue selber war die letzten Tage instabil, weil diverse Programme von Arasaka und Militech gegeneinander agiert haben. Mittlerweile gehts ihr aber besser.\n- [Eintrag 3]Durch Blue konnte ich von diversen Cyberware Projekten erfahren. Dahingehend brauch ich mehr Informationen. HK hat Sie erbaut.");
       break;
  
 	case "admin log":
-      writeOutput("Letzte Systemlogs:\n- [12:04] Zugriff durch Benutzer: SYSTEM\n- [12:05] Projektdatei geöffnet.\n- [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%\n- [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.\n- [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.\n- [2025-03-18 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.\n- [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.\n- [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%\n- [2025-04-18 23:10] Subjekt online.\n- [2025-04-19 gd:2§] Unbekannt\n- [2025-04-19 21:57] Unbekannte Daten entwendet.\n- [2025-04-19 23:00] Fremdzugriff erkannt.\n- [2025-04-20 04:00] Deepscan, Systemneustart, Analyse gestartet.\n- [2025-04-20 22:03] Analyse Durchgeführt.");
+      writeOutput("\n- [2025-04-17 21:02] Subjekt initialisiert. Neuronale Synchronisation: 87%\n- [2025-04-17 21:02] MILITECH-Jagdprotokoll aktiviert. SENTINEL-SYSTEM: AKTIV.\n- [2025-03-17 21:17] Gedächtnisüberschreibung erfolgreich. Persönlichkeit instabil.\n- [2025-03-18 21:45] ARASAKA-Eindämmung durchbrochen. Subjekt offline.\n- [2025-03-18 22:07] Reinitialisierung durchgeführt von Direktor Baranov.\n- [2025-03-18 23:10] Subjekt reinitialisiert – Neuronale Synchronisation: 92%\n- [2025-04-18 23:10] Subjekt online.\n- [2025-04-19 gd:2§] Unbekannt\n- [2025-04-19 21:57] Unbekannte Daten entwendet.\n- [2025-04-19 23:00] Fremdzugriff erkannt.\n- [2025-04-20 04:00] Deepscan, Systemneustart, Analyse gestartet.\n- [2025-04-20 22:03] Analyse Durchgeführt.\n- [2025-04-23 20:13] All Access.");
       break;
 
     case "systemstatus":
