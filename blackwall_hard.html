@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blackwall Access Fragment 01</title>
+  <style>
+    body {
+      background: black;
+      color: #00ffcc;
+      font-family: monospace;
+      overflow: hidden;
+      margin: 0;
+    }
+    .terminal {
+      padding: 20px;
+      white-space: pre;
+      font-size: 1.1em;
+      line-height: 1.4em;
+    }
+    .minigame {
+      padding: 20px;
+      white-space: pre;
+      font-size: 1.1em;
+      line-height: 1.4em;
+    }
+    #maze {
+      font-family: monospace;
+      white-space: pre;
+      line-height: 1.1em;
+      font-size: 16px;
+    }
+    .netwatch-warning {
+      background: red;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      animation: flash 0.5s infinite;
+      margin-top: 20px;
+    }
+    .timer {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #220000;
+      color: red;
+      padding: 5px 10px;
+      border: 1px solid red;
+      font-weight: bold;
+    }
+    .glitch {
+      animation: glitch 0.3s infinite;
+    }
+    .feedback {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      color: #ff00cc;
+      font-weight: bold;
+      animation: flash 0.5s 3;
+    }
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      50% { text-shadow: -2px 0 red, 2px 0 cyan; }
+      100% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal" id="terminal"></div>
+  <div id="maze"></div>
+  <div id="traceTimer" class="timer"></div>
+  <div id="fragment2" class="minigame" style="display: none;"></div>
+  <div id="feedback" class="feedback" style="display: none;">Signal-Verstärkung ...</div>
+  <audio id="glitchSound" src="glitch.mp3"></audio>
+  <audio id="warningSound" src="netwatch_alert.mp3"></audio>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const mazeContainer = document.getElementById("maze");
+    const glitchSound = document.getElementById("glitchSound");
+    const warningSound = document.getElementById("warningSound");
+    const traceTimer = document.getElementById("traceTimer");
+    const fragment2 = document.getElementById("fragment2");
+    const feedback = document.getElementById("feedback");
+
+    const introLines = [
+      "▓▒░ Zugriffspunkt Blackwall – Fragment 01 ░▒▓",
+      "Verbindung wird hergestellt...",
+      "Datenstrom analysieren █░░░░░░░░░░░░░",
+      "...",
+      "Zugriff erhalten.",
+      "Fragment: [ΔΩ-203]",
+      "MILA-Protocol: online.",
+      "Empfange: ‛Du hörst mich endlich... bleib nicht zu lange.ʼ",
+      "Starte Datenpaket-Schleuse..."
+    ];
+
+    let introIndex = 0;
+    let countdown = 60;
+    let timerInterval;
+    let moveCount = 0;
+
+    function showIntro() {
+      if (introIndex < introLines.length) {
+        terminal.innerHTML += introLines[introIndex] + "\n";
+        glitchSound.play();
+        introIndex++;
+        setTimeout(showIntro, 1500);
+      } else {
+        calculateMazeSize();
+        generateMaze();
+        startTraceTimer();
+      }
+    }
+
+    function calculateMazeSize() {
+      const cols = Math.floor(window.innerWidth / 16);
+      const rows = Math.floor(window.innerHeight / 18);
+      width = cols % 2 === 0 ? cols - 1 : cols;
+      height = rows % 2 === 0 ? rows - 1 : rows;
+      goalPos = { x: width - 2, y: height - 2 };
+    }
+
+    function startTraceTimer() {
+      updateGlitchEffect();
+      traceTimer.textContent = `Trace erkannt: ${countdown}s`;
+      timerInterval = setInterval(() => {
+        countdown--;
+        traceTimer.textContent = `Trace erkannt: ${countdown}s`;
+        updateGlitchEffect();
+        if (countdown <= 0) {
+          clearInterval(timerInterval);
+          terminal.innerHTML += "\n\n❌ Trace abgeschlossen. Verbindung wurde getrennt.";
+          document.removeEventListener("keydown", handleKey);
+        }
+      }, 1000);
+    }
+
+    function updateGlitchEffect() {
+      if (countdown <= 15) {
+        traceTimer.classList.add("glitch");
+      } else {
+        traceTimer.classList.remove("glitch");
+      }
+    }
+
+    let width, height;
+    let maze = [];
+    let playerPos = { x: 1, y: 1 };
+    let goalPos;
+
+    function generateMaze() {
+      maze = Array.from({ length: height }, (_, y) =>
+        Array.from({ length: width }, (_, x) => (x % 2 === 1 && y % 2 === 1 ? "░" : "█"))
+      );
+
+      const stack = [{ x: 1, y: 1 }];
+      const visited = Array.from({ length: height }, () => Array(width).fill(false));
+      visited[1][1] = true;
+
+      const dirs = [
+        { dx: 0, dy: -2 },
+        { dx: 0, dy: 2 },
+        { dx: -2, dy: 0 },
+        { dx: 2, dy: 0 }
+      ];
+
+      while (stack.length) {
+        const current = stack.pop();
+        shuffle(dirs);
+        for (const { dx, dy } of dirs) {
+          const nx = current.x + dx;
+          const ny = current.y + dy;
+          if (nx > 0 && ny > 0 && nx < width - 1 && ny < height - 1 && !visited[ny][nx]) {
+            visited[ny][nx] = true;
+            maze[ny][nx] = "░";
+            maze[current.y + dy / 2][current.x + dx / 2] = "░";
+            stack.push({ x: nx, y: ny });
+          }
+        }
+      }
+
+      maze[1][1] = "→";
+      maze[goalPos.y][goalPos.x] = "⚑";
+
+      drawMaze();
+      document.addEventListener("keydown", handleKey);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function drawMaze() {
+      let output = "";
+      for (let y = 0; y < maze.length; y++) {
+        for (let x = 0; x < maze[y].length; x++) {
+          output += maze[y][x];
+        }
+        output += "\n";
+      }
+      mazeContainer.textContent = output;
+    }
+
+    function movePlayer(dx, dy) {
+      const newX = playerPos.x + dx;
+      const newY = playerPos.y + dy;
+      if (maze[newY][newX] !== "█") {
+        if (maze[playerPos.y][playerPos.x] !== "⚑") {
+          maze[playerPos.y][playerPos.x] = "░";
+        }
+        playerPos = { x: newX, y: newY };
+        moveCount++;
+        if (moveCount % 3 === 0) showMovementFeedback();
+        if (maze[newY][newX] === "⚑") {
+          endMaze();
+        } else {
+          maze[newY][newX] = "→";
+        }
+        drawMaze();
+      }
+    }
+
+    function showMovementFeedback() {
+      feedback.style.display = 'block';
+      setTimeout(() => {
+        feedback.style.display = 'none';
+      }, 1000);
+    }
+
+    function handleKey(e) {
+      switch (e.key) {
+        case "ArrowUp": movePlayer(0, -1); break;
+        case "ArrowDown": movePlayer(0, 1); break;
+        case "ArrowLeft": movePlayer(-1, 0); break;
+        case "ArrowRight": movePlayer(1, 0); break;
+      }
+    }
+
+    function endMaze() {
+      clearInterval(timerInterval);
+      terminal.innerHTML += "\n\n✔ Datenpaket übertragen.";
+      terminal.innerHTML += "\n\n🛑 Netwatch hat diesen Zugriff erneut registriert.";
+      warningSound.play();
+      const warn = document.createElement("div");
+      warn.className = "netwatch-warning";
+      warn.innerText = "NETWATCH: Letzte Warnung. Protokoll C-777 aktiviert.";
+      document.body.appendChild(warn);
+      document.removeEventListener("keydown", handleKey);
+      setTimeout(() => {
+        terminal.innerHTML += "\n\n>>> Zugang zu Fragment 02 freigegeben...";
+        startFragment2();
+      }, 4000);
+    }
+
+
+
+function startFragment2() {
+  mazeContainer.style.display = 'none';
+  fragment2.style.display = 'block';
+  fragment2.innerText = `>>> FRAGMENT 02 – Ping-Trace Aktiviert\n\nSende ICMP-Requests...\nPing [198.51.100.14] mit 32 Bytes:\nAntwort von 198.51.100.14: Bytes=32 Zeit=1ms TTL=58\nAntwort von 198.51.100.14: Bytes=32 Zeit=1ms TTL=58\nAntwort von 198.51.100.14: Bytes=32 Zeit=2ms TTL=58\n\nTrace...\n1    10.0.0.1      1ms\n2    172.16.1.1    5ms\n3    192.168.0.1   9ms\n4    198.51.100.14 Ziel erreicht\n\n>>> Folge dem Signal...`;
+
+  // Button-Event hinzufügen
+  const button = document.getElementById("toNetrunner");
+  button.addEventListener("click", () => {
+    window.location.href = "netrunner_terminal.html"; // Hier die URL des Netrunner Terminals einfügen
+  });
+}
+
+    window.onload = showIntro;
+  </script>
+</body>
+</html>
